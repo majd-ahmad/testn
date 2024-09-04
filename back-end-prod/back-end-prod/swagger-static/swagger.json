@@ -1,0 +1,2425 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "operationId": "AccountController_fetchAccounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Accounts"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/accounts/update/profile": {
+      "patch": {
+        "operationId": "AccountController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Accounts"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/accounts/update/password": {
+      "put": {
+        "operationId": "AccountController_updatePassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Accounts"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/accounts/{accountId}": {
+      "get": {
+        "operationId": "AccountController_getAccountById",
+        "parameters": [
+          {
+            "name": "accountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Accounts"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/buyers": {
+      "get": {
+        "operationId": "BuyerController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuyerModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Buyers"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "BuyerController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyerModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Buyers"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "BuyerController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyerModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Buyers"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/buyers/byAccountId": {
+      "get": {
+        "operationId": "BuyerController_findByAccountId",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Buyers"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/buyers/{id}": {
+      "get": {
+        "operationId": "BuyerController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuyerModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Buyers"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "BuyerController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Buyers"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings": {
+      "get": {
+        "operationId": "ListingController_fetchListings",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortedBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dealType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          {
+            "name": "industryType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          {
+            "name": "city",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "maxPrice",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lastCursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListingOverview"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ]
+      },
+      "post": {
+        "operationId": "ListingController_registerListing",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateListingCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingOverview"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/seller-qna/{id}": {
+      "post": {
+        "operationId": "ListingController_createSellerQnA",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SellerQnAModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SellerQnAModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "ListingController_updateSellerQnA",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SellerQnAModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SellerQnAModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ListingController_getSellerQnAByListingId",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SellerQnAModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/financial/{listingId}": {
+      "post": {
+        "operationId": "ListingController_addFinancial",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateFinancialCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingOverview"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/mylistings": {
+      "get": {
+        "operationId": "ListingController_getMyListings",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/{listingId}": {
+      "get": {
+        "operationId": "ListingController_getListingById",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingDetails"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ]
+      }
+    },
+    "/listings/business/{listingid}": {
+      "get": {
+        "operationId": "ListingController_getListingBusinessById",
+        "parameters": [
+          {
+            "name": "listingid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingModel"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ]
+      }
+    },
+    "/listings/upload/images/{listingId}": {
+      "post": {
+        "operationId": "ListingController_uploadListingImages",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/upload/documents/{listingId}": {
+      "post": {
+        "operationId": "ListingController_uploadListingPdfs",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/latest/{number}": {
+      "get": {
+        "operationId": "ListingController_getLatestListings",
+        "parameters": [
+          {
+            "name": "number",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ]
+      }
+    },
+    "/listings/update/isSold": {
+      "put": {
+        "operationId": "ListingController_updateIsSold",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIsSold"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingOverview"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/update/listing/{listingId}": {
+      "patch": {
+        "operationId": "ListingController_updateListing",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateListingCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingOverview"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/update/financial/{listingId}": {
+      "patch": {
+        "operationId": "ListingController_updateFinancials",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateFinancialCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListingOverview"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/update/financial/previous-year/{financialId}/{type}": {
+      "patch": {
+        "operationId": "ListingController_updateFinancialPreviousYearByType",
+        "parameters": [
+          {
+            "name": "financialId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PreviousYearModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/financial/previous-years/{financialId}/{type}": {
+      "get": {
+        "operationId": "ListingController_getFinancialPreviousYearsByType",
+        "parameters": [
+          {
+            "name": "financialId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreviousYearModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/images/{listingId}/{fileId}": {
+      "delete": {
+        "operationId": "ListingController_deleteImage",
+        "parameters": [
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/pdfs/{listingId}/{fileId}": {
+      "delete": {
+        "operationId": "ListingController_deletePdf",
+        "parameters": [
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/listing/financial/{listingId}": {
+      "get": {
+        "operationId": "ListingController_getFinancialByListingId",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ]
+      }
+    },
+    "/listings/listing/documents/{listingId}": {
+      "get": {
+        "operationId": "ListingController_getDocumentsByListingId",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/listing/contact/{listingId}": {
+      "post": {
+        "operationId": "ListingController_contactListingOwner",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/listing/sendForApproval/{listingId}": {
+      "post": {
+        "operationId": "ListingController_sendForApproval",
+        "parameters": [
+          {
+            "name": "listingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/listings/listing/admin/approve": {
+      "get": {
+        "operationId": "ListingController_approveListing",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "rejectionReason",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Listings"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthEmailLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/email/confirm": {
+      "post": {
+        "operationId": "AuthController_confirmEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthConfirmEmailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/forgot/password": {
+      "post": {
+        "operationId": "AuthController_forgotPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset/password": {
+      "post": {
+        "operationId": "AuthController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/emailVerificationCode/send": {
+      "post": {
+        "operationId": "EmailVerificationCodeController_sendVerificationCodeEmail",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Email Verification Code"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/emailVerificationCode/verify": {
+      "post": {
+        "operationId": "EmailVerificationCodeController_verifyCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Email Verification Code"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/profilePicture": {
+      "put": {
+        "operationId": "ProfilePictureController_updateProfilePicture",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "ProfilePicture"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API",
+    "description": "API docs",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "AccountModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "isValid": {
+            "type": "boolean"
+          },
+          "accountProfilePicture": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName",
+          "phoneNumber",
+          "country",
+          "currency",
+          "isValid",
+          "accountProfilePicture"
+        ]
+      },
+      "UpdateAccountDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdatePasswordDto": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currentPassword",
+          "password",
+          "confirmPassword"
+        ]
+      },
+      "BuyerModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "interestedIn": {
+            "type": "string",
+            "enum": [
+              "Buy a Business",
+              "Invest in a business",
+              "Buy a Franchise"
+            ],
+            "example": "Buy a Business"
+          },
+          "businessStage": {
+            "type": "string",
+            "enum": [
+              "Ideation (MVP/Beta)",
+              "Validation (Early revenue)",
+              "Growth",
+              "Mature (Steady revenue)"
+            ],
+            "example": "Growth"
+          },
+          "preferredIndustry": {
+            "example": [
+              "IT",
+              "Finance"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "preferredCountry": {
+            "type": "string",
+            "example": "India"
+          },
+          "preferredCities": {
+            "example": [
+              "Mumbai",
+              "Delhi"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "aboutBuyer": {
+            "type": "string"
+          },
+          "aspectsLookedInto": {
+            "type": "string"
+          },
+          "investmentRange": {
+            "type": "string"
+          },
+          "preferredTimeFrame": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "accountId",
+          "interestedIn",
+          "businessStage",
+          "preferredIndustry",
+          "preferredCountry",
+          "preferredCities",
+          "aboutBuyer",
+          "aspectsLookedInto",
+          "investmentRange",
+          "preferredTimeFrame"
+        ]
+      },
+      "ListingOverview": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "dealType": {
+            "type": "string"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "annualRevenue": {
+            "type": "number"
+          },
+          "annualNetProfit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "isStartup": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "image",
+          "title",
+          "location",
+          "city",
+          "country",
+          "dealType",
+          "industryType",
+          "annualRevenue",
+          "annualNetProfit",
+          "price",
+          "isStartup",
+          "createdAt",
+          "ownerId"
+        ]
+      },
+      "CreateOrUpdateListingCommand": {
+        "type": "object",
+        "properties": {
+          "ownerId": {
+            "type": "string"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "aboutBusiness": {
+            "type": "string"
+          },
+          "assetOverview": {
+            "type": "string"
+          },
+          "dealType": {
+            "type": "string"
+          },
+          "isStartup": {
+            "type": "boolean"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "establishedDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "businessOverview": {
+            "type": "string"
+          },
+          "price": {
+            "type": "object"
+          },
+          "businessStage": {
+            "type": "string",
+            "enum": [
+              "Ideation (MVP/Beta)",
+              "Validation (Early revenue)",
+              "Growth",
+              "Mature (Steady revenue)"
+            ],
+            "description": "Business Stage: Select the current stage of your business. This helps us understand where you are in your business journey"
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "Sole Proprietorship",
+              "Partnership",
+              "Limited Liability Partnership (LLP)",
+              "Limited Liability Company (LLC)",
+              "Private Limited",
+              "Public Limited",
+              "Corporation",
+              "Nonprofit Organization",
+              "Benefit Corporation (B Corp)",
+              "Other"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ownerId",
+          "organizationName",
+          "aboutBusiness",
+          "assetOverview",
+          "dealType",
+          "isStartup",
+          "industryType",
+          "country",
+          "city",
+          "establishedDate",
+          "businessOverview",
+          "price",
+          "businessStage",
+          "entityType",
+          "createdAt"
+        ]
+      },
+      "SellerQnAModel": {
+        "type": "object",
+        "properties": {
+          "uniqueValueProposition": {
+            "type": "string",
+            "default": "Unique Value Proposition"
+          },
+          "keyProductsOrServices": {
+            "type": "string",
+            "default": "Key Products or Services"
+          },
+          "intellectualProperty": {
+            "type": "string",
+            "default": "Intellectual Property"
+          },
+          "legalIssues": {
+            "type": "string",
+            "default": "Legal Issues"
+          },
+          "challengesOrRisks": {
+            "type": "string",
+            "default": "Challenges or Risks"
+          }
+        }
+      },
+      "CreateOrUpdateFinancialCommand": {
+        "type": "object",
+        "properties": {
+          "lastYearRevenue": {
+            "type": "number"
+          },
+          "totalInventoryValue": {
+            "type": "number"
+          },
+          "totalAssetValue": {
+            "type": "number"
+          },
+          "customerAcquisitionCost": {
+            "type": "number"
+          },
+          "lastYearSales": {
+            "type": "number"
+          },
+          "lastYearProfit": {
+            "type": "number"
+          },
+          "ebitda": {
+            "type": "number"
+          },
+          "isDebt": {
+            "type": "boolean"
+          },
+          "totalDebt": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "lastYearRevenue",
+          "totalInventoryValue",
+          "totalAssetValue",
+          "customerAcquisitionCost",
+          "lastYearSales",
+          "lastYearProfit",
+          "ebitda",
+          "isDebt",
+          "totalDebt"
+        ]
+      },
+      "ListingDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "businessAge": {
+            "type": "object"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "establishmentDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "dealType": {
+            "type": "string"
+          },
+          "businessOverview": {
+            "type": "string"
+          },
+          "isStartup": {
+            "type": "boolean"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pdfs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "annualRevenue": {
+            "type": "number"
+          },
+          "annualSales": {
+            "type": "number"
+          },
+          "annualProfit": {
+            "type": "number"
+          },
+          "isDebt": {
+            "type": "boolean"
+          },
+          "ebitda": {
+            "type": "number"
+          },
+          "totalDebt": {
+            "type": "number"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "establishedDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "businessStage": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "assetOverview": {
+            "type": "string"
+          },
+          "aboutBusiness": {
+            "type": "string"
+          },
+          "rejectionReason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "location",
+          "country",
+          "city",
+          "price",
+          "industryType",
+          "businessAge",
+          "organizationName",
+          "establishmentDate",
+          "dealType",
+          "businessOverview",
+          "isStartup",
+          "photos",
+          "pdfs",
+          "annualRevenue",
+          "annualSales",
+          "annualProfit",
+          "isDebt",
+          "ebitda",
+          "totalDebt",
+          "ownerId"
+        ]
+      },
+      "ListingModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "aboutBusiness": {
+            "type": "string"
+          },
+          "assetOverview": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "rejectionReason": {
+            "type": "string"
+          },
+          "establishedDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "industryType": {
+            "type": "string"
+          },
+          "establishmentDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "businessAge": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dealType": {
+            "type": "string"
+          },
+          "businessOverview": {
+            "type": "string"
+          },
+          "isStartup": {
+            "type": "boolean"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "businessStage": {
+            "type": "string",
+            "enum": [
+              "Ideation (MVP/Beta)",
+              "Validation (Early revenue)",
+              "Growth",
+              "Mature (Steady revenue)"
+            ]
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "Sole Proprietorship",
+              "Partnership",
+              "Limited Liability Partnership (LLP)",
+              "Limited Liability Company (LLC)",
+              "Private Limited",
+              "Public Limited",
+              "Corporation",
+              "Nonprofit Organization",
+              "Benefit Corporation (B Corp)",
+              "Other"
+            ]
+          },
+          "qaSeller": {
+            "$ref": "#/components/schemas/SellerQnAModel"
+          }
+        },
+        "required": [
+          "id",
+          "organizationName",
+          "aboutBusiness",
+          "assetOverview",
+          "location",
+          "country",
+          "city",
+          "rejectionReason",
+          "establishedDate",
+          "price",
+          "industryType",
+          "establishmentDate",
+          "businessAge",
+          "dealType",
+          "businessOverview",
+          "isStartup",
+          "ownerId",
+          "businessStage",
+          "entityType",
+          "qaSeller"
+        ]
+      },
+      "UpdateIsSold": {
+        "type": "object",
+        "properties": {
+          "isSold": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isSold"
+        ]
+      },
+      "PreviousYearModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "value",
+          "type"
+        ]
+      },
+      "AuthEmailLoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "test1@example.com"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "AuthRegisterDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "test1@example.com"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "phoneNumber",
+          "password",
+          "confirmPassword"
+        ]
+      },
+      "AuthConfirmEmailDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "AuthForgotPasswordDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "AuthResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "password",
+          "confirmPassword",
+          "token"
+        ]
+      },
+      "VerifyCodeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    }
+  }
+}

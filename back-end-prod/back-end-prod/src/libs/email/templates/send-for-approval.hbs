@@ -1,0 +1,85 @@
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<body>
+<table
+  class='email-wrapper'
+  width='100%'
+  cellpadding='0'
+  cellspacing='0'
+  role='presentation'
+>
+  <tr>
+    <td align='center'>
+      <table
+        class='email-content'
+        width='100%'
+        cellpadding='0'
+        cellspacing='0'
+        role='presentation'
+      >
+      <!-- Email Body -->
+      <tr>
+        <td
+          class='email-body'
+          width='570'
+          cellpadding='0'
+          cellspacing='0'
+        >
+          <table
+            class='email-body_inner'
+            align='center'
+            width='570'
+            cellpadding='0'
+            cellspacing='0'
+            role='presentation'
+          >
+          <!-- Body content -->
+            <tr>
+              <td class='content-cell'>
+                <div class='f-fallback'>
+                  <h1>Listing {{listing.title}} is awaiting your approval!</h1>
+                    <p>Listing ID: {{listing.id}}</p>
+                    <p>Listing Name: {{listing.title}}</p>
+                    <p>Location: {{listing.location}}</p>
+                    <p>Asking Price: {{listing.price}}</p>
+                    <p>Industry: {{listing.industryType}}</p>
+                    <p>Deal Type: {{listing.dealType}}</p>
+                    <p>Listing Overview: {{listing.businessOverview}}</p>
+                    <p>Is startup:
+                        {{#if listing.isStartup}}
+                            true
+                        {{else}}
+                            false
+                        {{/if}}
+                    </p>
+                    <p>Annual Revenue: {{listing.annualRevenue}}</p>
+                    <p>Annual Sales: {{listing.annualRevenue}}</p>
+                    <p>Total Liabilities: {{listing.annualRevenue}}</p>
+                    <p>EBITDA: {{listing.annualRevenue}}</p>
+                    <p>Photos:</p>
+                    {{#listing.photos}}
+                        <img src="{{this}}" alt="listing photo" width="500">
+                    {{/listing.photos}}
+                    <p>Documents:</p>
+                    {{#listing.pdfs}}
+                        <a href="{{this}}">link</a>
+                    {{/listing.pdfs}}
+                    <div>
+                        <a href={{approveLink}}>
+                            <button>Approve</button>
+                        </a>
+                        <a href={{denyLink}}>
+                            <button>Deny</button>
+                        </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

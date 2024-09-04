@@ -1,0 +1,6 @@
+{
+  "ACCOUNT_NOT_FOUND": "Could not find account with this informations.",
+  "EMAIL_EXISTS": "An account already exists with this email.",
+  "PASSWORD_IS_WEEK": "Password is too week.",
+  "POLICY_VALIDATION_MUST_BE_TRUE": "You must agree on the policy before you create an account ."
+}

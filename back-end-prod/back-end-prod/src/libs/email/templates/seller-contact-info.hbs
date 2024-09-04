@@ -1,0 +1,67 @@
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<body>
+<table
+  class='email-wrapper'
+  width='100%'
+  cellpadding='0'
+  cellspacing='0'
+  role='presentation'
+>
+  <tr>
+    <td align='center'>
+      <table
+        class='email-content'
+        width='100%'
+        cellpadding='0'
+        cellspacing='0'
+        role='presentation'
+      >
+        <!-- Email Body -->
+        <tr>
+          <td
+            class='email-body'
+            width='570'
+            cellpadding='0'
+            cellspacing='0'
+          >
+            <table
+              class='email-body_inner'
+              align='center'
+              width='570'
+              cellpadding='0'
+              cellspacing='0'
+              role='presentation'
+            >
+              <!-- Body content -->
+              <tr>
+                <td class='content-cell'>
+                  <div class='f-fallback'>
+                    <h1>You have unlocked a business!</h1>
+                    <p>Thank you for choosing Connect To Invest for your business acquisition needs. Please find below the seller details of the business you are interested in.</p>
+                    <p>
+                      Seller Business Name: {{listing.title}}
+                    </p>
+                    <p>
+                      Seller Email: {{owner.email}}
+                    </p>
+                    <p>
+                      Seller Mobile Number: {{owner.phoneNumber}}
+                    </p>
+                    <p>
+                      If you have any questions, feel free to
+                        <a href='mailto:contact@connectoinvest.com'>email our
+                          customer success team</a>
+                        . (We reply in lighting speed)
+                        <p>Thanks, <br />Connect To Invest team.</p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

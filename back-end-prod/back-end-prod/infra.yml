@@ -1,0 +1,22 @@
+---
+- name: "Build a container"
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: stop current running container
+      command: docker stop prod-back
+      ignore_errors: yes
+
+    - name: remove stopped container
+      command: docker rm prod-back
+      ignore_errors: yes
+
+    - name: remove comingsoon-image
+      command: docker rmi prod-back
+      ignore_errors: yes
+
+    - name: build docker image using the Dockerfile
+      command: docker build -t prod-back .
+
+    - name: run container
+      command: docker run -d --name prod-back -p 3020:3000 prod-back

@@ -1,0 +1,6 @@
+{
+  "ACCOUNT_NOT_FOUND": "Impossible de trouver un compte avec ces informations.",
+  "EMAIL_EXISTS": "Un compte existe déjà avec cette adresse email.",
+  "PASSWORD_IS_WEEK": "Mot de passe trop faible.",
+  "POLICY_VALIDATION_MUST_BE_TRUE": "Vous devez accepter la politique avant de creer un compte."
+}

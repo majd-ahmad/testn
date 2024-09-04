@@ -1,0 +1,203 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  Seller  @map("SELLER")
+  Buyer   @map("BUYER")
+  Unknown @map("UNKNOWN")
+}
+
+enum Currency {
+  USD @map("USD")
+  EU  @map("EU")
+  AED @map("AED")
+}
+
+enum Status {
+  published @map("PUBLISHED")
+  pending   @map("PENDING")
+  rejected  @map("REJECTED")
+}
+
+model Account {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  password       String
+  firstName      String
+  lastName       String
+  phoneNumber    String
+  country        String   @default("")
+  isApproved     Boolean  @default(false)
+  isValid        Boolean  @default(false)
+  role           Role[]   @default([])
+  currency       Currency @default(USD)
+  location       String   @default("")
+  profilePicture String   @default("")
+  isAdmin        Boolean  @default(false)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
+  lastLogin DateTime?
+
+  listingsOwned         Listing[]
+  Session               Session[]
+  EmailVerificationCode EmailVerificationCode[]
+  accountProfilePicture AccountProfilePicture?
+  Buyer                 Buyer[]
+}
+
+model Buyer {
+  id                 String   @id @default(uuid())
+  interestedIn       String
+  businessStage      String
+  preferredIndustry  String[]
+  preferredCountry   String
+  preferredCities    String[]
+  aboutBuyer         String
+  aspectsLookedInto  String
+  investmentRange    String
+  preferredTimeFrame String? // Optional field
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+}
+
+model Listing {
+  id      String @id @default(uuid())
+  ownerId String
+
+  isApproved       Boolean @default(false)
+  title            String  @default("")
+  organizationName String  @default("")
+  dealType         String  @default("")
+  entityType       String  @default("")
+  businessStage    String  @default("")
+  aboutBusiness    String  @default("")
+  assetOverview    String  @default("")
+  rejectionReason  String  @default("")
+
+  isStartup            Boolean
+  industryType         String
+  country              String
+  city                 String
+  establishedDate      DateTime
+  businessOverview     String
+  price                Decimal
+  financial            Financial?
+  listingImages        ListingPhoto[]
+  listingPdfs          ListingPdf[]
+  owner                Account               @relation(fields: [ownerId], references: [id])
+  isSold               Boolean               @default(false)
+  status               Status                @default(pending)
+  createdAt            DateTime?             @default(now())
+  updatedAt            DateTime?             @updatedAt()
+  ListingApprovalToken ListingApprovalToken?
+  sellerQnA            SellerQnA?
+}
+
+model SellerQnA {
+  id                     String  @id @default(uuid())
+  uniqueValueProposition String? @db.VarChar(500)
+  keyProductsOrServices  String? @db.VarChar(500)
+  intellectualProperty   String? @db.VarChar(500)
+  legalIssues            String? @db.VarChar(500)
+  challengesOrRisks      String? @db.VarChar(500)
+  listingId              String  @unique
+  listing                Listing @relation(fields: [listingId], references: [id])
+}
+
+model PreviousYearValues {
+  id             String     @id @default(uuid())
+  year           Int
+  value          Float
+  type           String
+  financialId    String
+  financialModel Financial? @relation(fields: [financialId], references: [id])
+}
+
+model Financial {
+  id                      String               @id @default(uuid())
+  lastYearRevenue         Decimal
+  lastYearSales           Decimal
+  lastYearProfit          Decimal
+  ebitda                  Decimal?
+  isDebt                  Boolean
+  totalDebt               Decimal?
+  totalInventoryValue     Decimal?
+  totalAssetValue         Decimal?
+  customerAcquisitionCost Decimal?
+  roi                     Decimal?
+  listingId               String               @unique
+  listing                 Listing              @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  previousYearsValues     PreviousYearValues[]
+}
+
+model ListingPhoto {
+  id         String   @id @default(uuid())
+  fileName   String
+  filesSize  Int?
+  uploadDate DateTime @default(now())
+  listing    Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listingId  String?
+}
+
+model ListingPdf {
+  id         String   @id @default(uuid())
+  fileName   String
+  filesSize  Int?
+  uploadDate DateTime @default(now())
+  listing    Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listingId  String?
+}
+
+model Session {
+  id        Int       @id @default(autoincrement())
+  accountId String
+  account   Account   @relation(fields: [accountId], references: [id])
+  createdAt DateTime  @default(now())
+  deleted   Boolean
+  deletedAt DateTime?
+}
+
+model ListingApprovalToken {
+  id        String    @id @default(uuid())
+  listingId String    @unique
+  listing   Listing   @relation(fields: [listingId], references: [id])
+  token     String
+  createdAt DateTime  @default(now())
+  deleted   Boolean   @default(false)
+  deletedAt DateTime?
+}
+
+model EmailVerificationCode {
+  id        String   @id @default(uuid())
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id])
+  digits    String
+  used      Boolean  @default(false)
+  expiresAt DateTime @default(dbgenerated("NOW() + interval '15 min'"))
+  createdAt DateTime @default(now())
+}
+
+model AccountProfilePicture {
+  id         String   @id @default(uuid())
+  accountId  String   @unique
+  account    Account  @relation(fields: [accountId], references: [id])
+  uploadDate DateTime @default(now())
+  fileName   String
+  filesSize  Int?
+}

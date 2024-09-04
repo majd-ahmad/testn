@@ -1,0 +1,152 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <style>
+        .email-container .logo-img {
+            height: 50px;
+        }
+
+        .email-container .card {
+            background-color: #fff;
+            border-radius: 22px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .card-body {
+            color: #000;
+        }
+
+        .email-container .header {
+            text-align: center;
+        }
+
+        .email-container .header .title {
+            text-align: center;
+            color: #000;
+            font-size: 20px;
+        }
+
+        .header-logo {
+            height: 35px;
+        }
+
+        .body-logo {
+            width: 200px;
+        }
+
+        .footer {
+            display: flex;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .footer .right {
+            margin-left: auto;
+        }
+
+        .footer .right .social-media-container {
+            margin-left: auto;
+            display: flex;
+            list-style: none;
+        }
+
+        .footer .right .social-media-container .social-media {
+            margin: 0 10px;
+        }
+
+        .footer .right .social-media-container .social-media .social-media-logo {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer .left .logo-img {
+            margin: auto;
+            height: 32px;
+            object-fit: cover;
+        }
+
+
+        .centred-text {
+            text-align: center;
+        }
+
+        .colored-text {
+            color: #5D6CF8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="email-container">
+        <img class="header-logo" src="https://dev.connectoinvest.com/headerLogo.png" alt="" class="logo-img">
+        <div class="card">
+            <div class="header">
+                <img class="body-logo"
+                    src="https://connectoinvest-email-templates.s3.eu-central-1.amazonaws.com/sad.jpeg" alt="body-logo">
+                <h1 class="title" style="text-align: center;">Investor Profile Rejected</h1>
+            </div>
+            <div class="card-body">
+
+                <p>
+                    Dear
+                    {{#if name}}
+                    {{name}}
+                    {{/if}},
+                </p>
+                <p>
+                    We are sorry to inform that your investor profile has been rejected by our verification team
+                </p>
+                <p>
+                    Reason for Rejection: {{reason}}
+                </p>
+                <p>
+                    What's Next?
+                </p>
+                <p>You can update your business listing and submit it for approval again.</p>
+                <a style="display: flex;justify-content:center;" href="{{link}}">
+                    <img src="https://connectoinvest-email-templates.s3.eu-central-1.amazonaws.com/update-business.jpeg"
+                        alt="reset-password">
+                </a>
+                <p class="colored-text">
+                    NOTE: We respect your privacy. Your business details are completely safe with us.
+                </p>
+
+                <p>Thanks</p>
+                <p>Connect To Invest Team</p>
+                <div style="text-align: center;">
+                    <p>
+                        You can contact us with any questions by emailing at
+                        <a class="colored-text" href='mailto:contact@connectoinvest.com'>
+                            support@connectoinvest.com
+                        </a>
+                    </p>
+                    <p>Good luck with selling your business!</p>
+                    <p>Connect To Invest Team</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="footer">
+            <div class="left">
+                <img src="https://dev.connectoinvest.com/headerLogo.png" alt="" class="logo-img">
+            </div>
+            <div class="right">
+                <ul class="social-media-container">
+                    <li class="social-media">
+                        <a href="https://www.linkedin.com/company/connect-to-invest/">
+                            <img class="social-media-logo"
+                                src="https://connectoinvest-email-templates.s3.eu-central-1.amazonaws.com/linkedin.png"
+                                alt="linkedin-icon">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
